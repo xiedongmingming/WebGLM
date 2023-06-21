@@ -1,10 +1,13 @@
 import gradio as gr
+
 from model import citation_correction, load_model
+
 import argparse
 
 from arguments import add_model_config_args
 
 TOTAL_NUM = 10
+
 CSS = """
     #col {
         width: min(100%, 800px);
@@ -18,8 +21,6 @@ CSS = """
     footer{display:none !important}
 """
 
-
-    
 # a summary structure ( use <summary> tag in html )
 # title is in summary, click to expand
 # in the container, there is an icon that can be clicked to jump to url.
@@ -39,54 +40,72 @@ ref_html = """
 
 """
 
-def query(query: str):    
-    
+
+def query(query: str):
+    #
     refs = []
+
     answer = "Loading ..."
-    
+
     yield answer, ""
-    
+
     for resp in webglm.stream_query(query):
+
         if "references" in resp:
             refs = resp["references"]
+
         if "answer" in resp:
+            #
             answer = resp["answer"]
             answer = citation_correction(answer, [ref['text'] for ref in refs])
-        yield answer, "<h3>References (Click to Expand)</h3>" + "\n".join([ref_html.format(**item, index = idx + 1) for idx, item in enumerate(refs)])
-    
+
+        yield answer, "<h3>References (Click to Expand)</h3>" + "\n".join(
+            [ref_html.format(**item, index=idx + 1) for idx, item in enumerate(refs)]
+        )
+
+
 if __name__ == '__main__':
-    
+    #
     arg = argparse.ArgumentParser()
-    add_model_config_args(arg)
+
+    add_model_config_args(arg)  # 模型配置相关的配置
+
     args = arg.parse_args()
-    
-    webglm = load_model(args)
-    
+
+    webglm = load_model(args)  # 模型加载
+
     with gr.Blocks(theme=gr.themes.Base(), css=CSS) as demo:
-        
+        #
         with gr.Column(elem_id='col'):
+            #
             gr.Markdown(
-            """
-            # WebGLM Demo
-            """)
+                """
+                # WebGLM Demo
+                """
+            )
+
             with gr.Row():
+                #
                 # with gr.Column(scale=8):
-                query_box = gr.Textbox(show_label=False, placeholder="Enter question and press ENTER").style(container=False)
+                #
+                query_box = gr.Textbox(show_label=False, placeholder="Enter question and press ENTER").style(
+                    container=False)
                 # with gr.Column(scale=1, min_width=60):
                 #     query_button = gr.Button('Query')
-            
+
             answer_box = gr.Textbox(show_label=False, value='', lines=5)
-            
+
             # with gr.Box():
             ref_boxes = gr.HTML(label="References")
-    
+
             # with gr.Column() as refs_col:
             #     ref_boxes = []
             #     for i in range(TOTAL_NUM):
             #         ref_boxes.append(gr.Textbox(f"Textbox {i}", visible=False)) 
- 
+
         query_box.submit(query, query_box, [answer_box, ref_boxes])
         # query_button.click(query, query_box, [answer_box, ref_boxes])
 
     demo.queue()
+
     demo.launch()
