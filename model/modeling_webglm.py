@@ -62,24 +62,45 @@ class WebGLM:
         return {"answer": f[0].strip(), "references": refs}
 
     def stream_query(self, question):
+
         refs = self.ref_retriever.query(question)
+
         if not refs:
+            #
             yield {"references": [], "answer": ""}
+
             return
+
         yield {"references": refs}
+
         prompt = ''
+
         for ix, ref in enumerate(refs):
+            #
             txt = ref["text"]
+
             prompt += f'Reference [{ix + 1}]: {txt}' '\\'
+
         prompt += f'Question: {question}\\Answer: [gMASK]'
+
         inputs = self.tokenizer(prompt, return_tensors="pt")
         inputs = self.tokenizer.build_inputs_for_generation(inputs, max_gen_length=1024)
+
         if self.device:
+            #
             inputs = inputs.to(self.device)
-        outputs = self.model.generate(**inputs, max_length=1024, eos_token_id=self.tokenizer.eop_token_id,
-                                      pad_token_id=self.tokenizer.eop_token_id)
+
+        outputs = self.model.generate(
+            **inputs,
+            max_length=1024,
+            eos_token_id=self.tokenizer.eop_token_id,
+            pad_token_id=self.tokenizer.eop_token_id
+        )
+
         f = re.findall(r"<\|startofpiece\|>(.+)<\|endofpiece\|>", self.tokenizer.decode(outputs[0].tolist()))
+
         assert len(f) > 0
+
         yield {"answer": f[0].strip()}
 
 

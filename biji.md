@@ -7,10 +7,22 @@
 
 ```
 pip install -r requirements.txt
+
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117
+
+pip install sentencepiece
 ```
 
-3. 运行代码：
+3. 下载模型数据
 
 ```
-python web_demo.py
+python download.py retriever-pretrained-checkpoint --save ./tmp
 ```
+
+4. 运行代码：
+
+```
+python web_demo.py --retriever_ckpt_path ./tmp/retriever-pretrained-checkpoint
+```
+
+注意：需要先设置环境变量SERPAPI_KEY

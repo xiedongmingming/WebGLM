@@ -41,7 +41,7 @@ ref_html = """
 """
 
 
-def query(query: str):
+def query(query: str):  # 查询逻辑
     #
     refs = []
 
@@ -52,6 +52,7 @@ def query(query: str):
     for resp in webglm.stream_query(query):
 
         if "references" in resp:
+            #
             refs = resp["references"]
 
         if "answer" in resp:
@@ -89,8 +90,11 @@ if __name__ == '__main__':
                 # with gr.Column(scale=8):
                 #
                 query_box = gr.Textbox(show_label=False, placeholder="Enter question and press ENTER").style(
-                    container=False)
+                    container=False
+                )
+                #
                 # with gr.Column(scale=1, min_width=60):
+                #
                 #     query_button = gr.Button('Query')
 
             answer_box = gr.Textbox(show_label=False, value='', lines=5)
@@ -99,9 +103,12 @@ if __name__ == '__main__':
             ref_boxes = gr.HTML(label="References")
 
             # with gr.Column() as refs_col:
+            #
             #     ref_boxes = []
+            #
             #     for i in range(TOTAL_NUM):
-            #         ref_boxes.append(gr.Textbox(f"Textbox {i}", visible=False)) 
+            #
+            #         ref_boxes.append(gr.Textbox(f"Textbox {i}", visible=False))
 
         query_box.submit(query, query_box, [answer_box, ref_boxes])
         # query_button.click(query, query_box, [answer_box, ref_boxes])
