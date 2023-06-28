@@ -1,5 +1,5 @@
 import json
-from .searching import Searcher
+from .searching import create_searcher
 from .fetching import Fetcher
 from .extracting import Extractor
 from .filtering import ReferenceFilter
@@ -8,11 +8,9 @@ from typing import Optional, Union, List, Dict, Tuple, Iterable, Callable, Any
 
 
 class ReferenceRetiever():
-    #
-    def __init__(self, retriever_ckpt_path, device=None, filter_max_batch_size=400) -> None:
 
-        self.searcher = Searcher()
-
+    def __init__(self, retriever_ckpt_path, device=None, filter_max_batch_size=400, searcher="serpapi") -> None:
+        self.searcher = create_searcher(searcher)
         self.fetcher = Fetcher()
 
         self.extractor = Extractor()

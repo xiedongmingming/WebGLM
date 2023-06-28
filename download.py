@@ -196,7 +196,7 @@ if __name__ == "__main__":
 
         save_dir = os.path.join(args.save, 'generator-training-data', 'raw')
 
-        if download('https://cloud.tsinghua.edu.cn/d/ae204894f2e842f19a3f/', save_dir):
+        if download('https://cloud.tsinghua.edu.cn/d/d290dcfc92e342f9a017/', save_dir):
 
             for split in ['train', 'val', 'test']:
 
@@ -220,15 +220,9 @@ if __name__ == "__main__":
                 target_out.close()
 
     if args.target in ["all", "retriever-training-data"]:
-        #
-        download(
-            "https://cloud.tsinghua.edu.cn/d/fa5e6eb1afac4f08a4c6/",
-            os.path.join(args.save, 'retriever-training-data')
-        )
+
+        download("https://cloud.tsinghua.edu.cn/d/3927b67a834c475288e2/", os.path.join(args.save, 'retriever-training-data'))
 
     if args.target in ["all", "retriever-pretrained-checkpoint"]:
-        #
-        download(
-            "https://cloud.tsinghua.edu.cn/d/54056861b2f34bbfb3f9/",
-            os.path.join(args.save, 'retriever-pretrained-checkpoint')
-        )
+
+        download("https://cloud.tsinghua.edu.cn/d/bc96946dd9a14c84b8d4/", os.path.join(args.save, 'retriever-pretrained-checkpoint'))
