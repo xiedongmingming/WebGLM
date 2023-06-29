@@ -1,12 +1,13 @@
-<h1>WebGLM: 基于人类偏好的高效网络增强问答系统</h1>
+<h1>WEBGLM：基于人类偏好的高效网络增强问答系统</h1>
 
 <p align="center">📃 <a href="https://arxiv.org/pdf/2306.07906.pdf" target="_blank">论文 (KDD 2023)</a>
 
-本项目为 WebGLM 的官方实现。
+本项目为WEBGLM的官方实现。
 
-https://github.com/THUDM/WebGLM/assets/129033897/d2e1dd35-6340-4175-ac2d-fd585daa17cf
+[DEMO视频](https://github.com/THUDM/WebGLM/assets/129033897/d2e1dd35-6340-4175-ac2d-fd585daa17cf
+)
 
-_Read this in [English](README.md)._
+_READ THIS IN [ENGLISH](README.md)._
 
 <!-- TOC -->
 
@@ -14,13 +15,13 @@ _Read this in [English](README.md)._
     -   [特点](#特点)
 -   [开发准备](#开发准备)
     -   [准备代码和环境](#准备代码和环境)
-    -   [准备 SerpAPI 密钥](#准备serpapi密钥)
+    -   [准备SERPAPI密钥](#准备SERPAPI密钥)
     -   [下载检索器权重](#下载检索器权重)
--   [尝试 WebGLM](#尝试webglm)
+-   [尝试WEBGLM](#尝试WEBGLM)
     -   [导出环境变量](#导出环境变量)
     -   [以命令行界面运行](#以命令行界面运行)
-    -   [以 Web 服务形式运行](#以Web服务形式运行)
--   [训练 WebGLM](#训练webglm)
+    -   [以WEB服务形式运行](#以WEB服务形式运行)
+-   [训练WEBGLM](#训练WEBGLM)
     -   [训练生成器](#训练生成器)
         -   [准备数据](#准备数据)
         -   [训练](#训练)
@@ -35,12 +36,12 @@ _Read this in [English](README.md)._
 
 ![paper](./assets/main_process.png)
 
-WebGLM 旨在使用 10 亿参数的通用语言模型（GLM）提供一种高效且低成本的网络增强问答系统。它旨在通过将网络搜索和召回功能集成到预训练的语言模型中以进行实际应用的部署。
+WEBGLM旨在使用10亿参数的通用语言模型（GLM）提供一种高效且低成本的网络增强问答系统。它旨在通过将网络搜索和召回功能集成到预训练的语言模型中以进行实际应用的部署。
 
 ## 特点
 
 -   **大模型增强检索器**：增强了相关网络内容的检索能力，以更好地准确回答问题。
--   **自举生成器**：利用 GLM 的能力为问题生成回复，提供详细的答案。
+-   **自举生成器**：利用GLM的能力为问题生成回复，提供详细的答案。
 -   **基于人类偏好的打分器**：通过优先考虑人类偏好来评估生成回复的质量，确保系统能够产生有用和吸引人的内容。
 
 # 开发准备
@@ -53,27 +54,27 @@ WebGLM 旨在使用 10 亿参数的通用语言模型（GLM）提供一种高效
 pip install -r requirements.txt
 ```
 
-安装 Nodejs。
+安装NODEJS。
 
 ```bash
-apt install nodejs # 如果你使用Ubuntu
+apt install nodejs # 如果你使用UBUNTU
 ```
 
-安装 playwright 依赖项。
+安装PLAYWRIGHT依赖项。
 
 ```bash
 playwright install
 ```
 
-如果你的主机中没有安装浏览器环境，则需要安装。不用担心，如果是这种情况，playwright 会在首次执行时出现说明。
+如果你的主机中没有安装浏览器环境，则需要安装。不用担心，如果是这种情况，PLAYWRIGHT会在首次执行时出现说明。
 
-## 准备 SerpAPI 密钥
+## 准备SERPAPI密钥
 
-在搜索过程中，我们使用 SerpAPI 获取搜索结果。你需要从[这里](https://serpapi.com/)获取 SerpAPI 密钥。
+在搜索过程中，我们使用SERPAPI获取搜索结果。你需要从[这里](https://serpapi.com/)获取SERPAPI密钥。
 
 然后将环境变量`SERPAPI_KEY`设置为你的密钥。
 
-或者，你可以通过 playwright 使用 Bing。你可以在 WebGLM 的启动命令行中添加 `--searcher bing` 以使用 Bing 搜索。
+或者，你可以通过PLAYWRIGHT使用BING。你可以在WEBGLM的启动命令行中添加`--searcher bing`以使用BING搜索。
 
 ```bash
 export SERPAPI_KEY="YOUR KEY"
@@ -83,13 +84,13 @@ export SERPAPI_KEY="YOUR KEY"
 
 通过运行以下命令从[清华云](https://cloud.tsinghua.edu.cn/d/54056861b2f34bbfb3f9/)下载检索器的权重。
 
-你可以通过 `--save SAVE_PATH` 手动指定检索器权重的保存路径。
+你可以通过`--save SAVE_PATH`手动指定检索器权重的保存路径。
 
 ```bash
-python download.py retriever-pretrained-checkpoint
+python download.py retriever-pretrainedy-checkpoint
 ```
 
-# 尝试 WebGLM
+# 尝试WEBGLM
 
 在运行代码之前，请确保你的设备空间足够。
 
@@ -103,33 +104,33 @@ export WEBGLM_RETRIEVER_CKPT=./download/retriever-pretrained-checkpoint
 
 ## 以命令行界面运行
 
-你可以尝试 WebGLM-2B 模型：
+你可以尝试WEBGLM-2B模型：
 
 ```bash
 python cli_demo.py -w THUDM/WebGLM-2B
 ```
 
-或直接尝试 WebGLM-10B 模型：
+或直接尝试WEBGLM-10B模型：
 
 ```bash
 python cli_demo.py
 ```
 
-如果你想使用 Bing 搜索而不是 SerpAPI，可以在命令行中添加 `--searcher bing`，例如：
+如果你想使用BING搜索而不是SERPAPI，可以在命令行中添加`--searcher bing`，例如：
 
 ```bash
 python cli_demo.py -w THUDM/WebGLM-2B --searcher bing
 ```
 
-## 以 Web 服务形式运行
+## 以WEB服务形式运行
 
-使用与 `cli_demo.py` 相同的参数运行 `web_demo.py`。例如，你可以通过 Bing 搜索使用 WebGLM-2B 模型：
+使用与`CLI_DEMO.PY`相同的参数运行`WEB_DEMO.PY`。例如，你可以通过BING搜索使用WEBGLM-2B模型：
 
 ```bash
 python web_demo.py -w THUDM/WebGLM-2B --searcher bing
 ```
 
-# 训练 WebGLM
+# 训练WEBGLM
 
 ## 训练生成器
 
@@ -141,11 +142,11 @@ python web_demo.py -w THUDM/WebGLM-2B --searcher bing
 python download.py generator-training-data
 ```
 
-它将自动下载所有数据，并将它们预处理成可以立即在`./download`中使用的 seq2seq 格式。
+它将自动下载所有数据，并将它们预处理成可以立即在`./DOWNLOAD`中使用的SEQ2SEQ格式。
 
 ### 训练
 
-请参考[GLM 仓库](https://github.com/THUDM/GLM#train-with-your-own-data)进行 seq2seq 训练。
+请参考[GLM仓库](https://github.com/THUDM/GLM#train-with-your-own-data)进行SEQ2SEQ训练。
 
 ## 训练检索器
 
@@ -167,7 +168,7 @@ python train_retriever.py --train_data_dir ./download/retriever-training-data
 
 # 评测
 
-你可以在 TriviaQA、WebQuestions 和 NQ Open 上重现我们的结果。以 TriviaQA 为例，可以运行以下命令行：
+你可以在TRIVIAQA、WEBQUESTIONS和NQ OPEN上重现我们的结果。以TRIVIAQA为例，可以运行以下命令行：
 
 ```bash
 bash scripts/triviaqa.sh
@@ -177,7 +178,7 @@ bash scripts/triviaqa.sh
 
 # 真实应用案例
 
-您可以在[这里](assets/cases)查看一些 WebGLM 实际应用场景的示例。
+您可以在[这里](assets/cases)查看一些WEBGLM实际应用场景的示例。
 
 # 引用
 

@@ -1,8 +1,12 @@
+import os
+
 from model import load_model, citation_correction
 
 import argparse
 
 from arguments import add_model_config_args
+
+os.environ['WEBGLM_RETRIEVER_CKPT'] = 'F:\\workspace\\github\\xiedongmingming\\WebGLM\\download\\retriever-pretrained-checkpoint'
 
 if __name__ == '__main__':
 

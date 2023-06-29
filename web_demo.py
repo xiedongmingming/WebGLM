@@ -1,3 +1,5 @@
+import os
+
 import gradio as gr
 
 from model import citation_correction, load_model
@@ -64,6 +66,9 @@ def query(query: str):  # 查询逻辑
             [ref_html.format(**item, index=idx + 1) for idx, item in enumerate(refs)]
         )
 
+
+os.environ[
+    'WEBGLM_RETRIEVER_CKPT'] = 'F:\\workspace\\github\\xiedongmingming\\WebGLM\\download\\retriever-pretrained-checkpoint'
 
 if __name__ == '__main__':
     #
