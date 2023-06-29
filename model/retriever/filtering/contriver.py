@@ -117,7 +117,11 @@ class ReferenceFilter:
     #
     def __init__(self, retriever_ckpt_path, device=None, max_batch_size=400) -> None:
         #
-        self.scorer = ContrieverScorer(retriever_ckpt_path, device, max_batch_size)
+        self.scorer = ContrieverScorer(
+            retriever_ckpt_path,
+            device,
+            max_batch_size
+        )
 
     def produce_references(self, query, paragraphs: List[Dict[str, str]], topk=5) -> List[Dict[str, str]]:
         """

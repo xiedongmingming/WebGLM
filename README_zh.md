@@ -87,7 +87,7 @@ export SERPAPI_KEY="YOUR KEY"
 你可以通过`--save SAVE_PATH`手动指定检索器权重的保存路径。
 
 ```bash
-python download.py retriever-pretrainedy-checkpoint
+python download.py retriever-pretrained-checkpoint
 ```
 
 # 尝试WEBGLM

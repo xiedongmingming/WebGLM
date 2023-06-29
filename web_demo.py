@@ -116,6 +116,7 @@ if __name__ == '__main__':
             #         ref_boxes.append(gr.Textbox(f"Textbox {i}", visible=False))
 
         query_box.submit(query, query_box, [answer_box, ref_boxes])
+        
         # query_button.click(query, query_box, [answer_box, ref_boxes])
 
     demo.queue()

@@ -100,15 +100,29 @@ def move_dict_to_device(obj, device):
 
 def collate(data):
     #
-    question = tokenizer([item["question"] for item in data], return_tensors="pt", padding=True, truncation=True)
+    question = tokenizer(
+        [item["question"] for item in data],
+        return_tensors="pt",
+        padding=True,
+        truncation=True
+    )
 
-    positive_reference = tokenizer([item["positive_reference"] for item in data], return_tensors="pt", padding=True,
-                                   truncation=True)
+    positive_reference = tokenizer(
+        [item["positive_reference"] for item in data],
+        return_tensors="pt",
+        padding=True,
+        truncation=True
+    )
 
-    negative_reference = tokenizer([item["negative_reference"] for item in data], return_tensors="pt", padding=True,
-                                   truncation=True)
+    negative_reference = tokenizer(
+        [item["negative_reference"] for item in data],
+        return_tensors="pt",
+        padding=True,
+        truncation=True
+    )
 
     for key in question: question[key] = question[key].to(args.device)
+
     for key in positive_reference: positive_reference[key] = positive_reference[key].to(args.device)
     for key in negative_reference: negative_reference[key] = negative_reference[key].to(args.device)
 
@@ -148,36 +162,56 @@ def save(name):
 
 
 def train(max_epoch=10, eval_step=200, save_step=400, print_step=50):
+    #
     step = 0
+
     for epoch in range(0, max_epoch):
+
         print("EPOCH %d" % epoch)
+
         for q, pos, neg in train_loader:
+
             model.train()
+
             step += 1
+
             opt.zero_grad()
+
             results = model(q, pos, neg)
+
             loss = model.loss(*results)
 
             if step % print_step == 0:
+                #
                 print("Step %4d, Loss, Acc: %10.6f, %10.6f" % (step, loss, model.acc(*results)))
 
             loss.backward()
+
             opt.step()
 
             scheduler.step()
+
             model.zero_grad()
+
             if step % eval_step == 0:
+                #
                 eval()
+
                 pass
+
             if step % save_step == 0:
+                #
                 save("step-%d" % (step))
 
         save("step-%d-epoch-%d" % (step, epoch))
+
         # eval()
 
 
 if __name__ == "__main__":
+    #
     args = argparse.ArgumentParser()
+
     args.add_argument("--max_epoch", type=int, default=3)
     args.add_argument("--eval_step", type=int, default=40)
     args.add_argument("--save_step", type=int, default=40)
@@ -205,14 +239,19 @@ if __name__ == "__main__":
     eval_loader = DataLoader(eval_set, batch_size=args.eval_batch_size, collate_fn=collate)
 
     model = QuestionReferenceDensity()
+
     model = model.to(args.device)
+
     opt = AdamW(model.parameters(), lr=args.lr, betas=(0.9, 0.999), eps=1e-8, weight_decay=0.01)
+
     scheduler_args = {
         "warmup": args.warmup,
         "total": args.total,
         "ratio": args.ratio,
     }
+
     scheduler = WarmupLinearScheduler(opt, **scheduler_args)
+
     temp = args.temp
 
     train(max_epoch=args.max_epoch, eval_step=args.eval_step, save_step=args.save_step, print_step=args.print_step)

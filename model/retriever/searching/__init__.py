@@ -4,6 +4,7 @@ from .searcher import SearchResult, SearcherInterface
 
 
 def create_searcher(name: str) -> SearcherInterface:
+    #
     if name == "serpapi":
         return SerpAPISearcher()
     elif name == "bing":

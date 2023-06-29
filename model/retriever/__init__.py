@@ -10,7 +10,9 @@ from typing import Optional, Union, List, Dict, Tuple, Iterable, Callable, Any
 class ReferenceRetiever():
 
     def __init__(self, retriever_ckpt_path, device=None, filter_max_batch_size=400, searcher="serpapi") -> None:
+        #
         self.searcher = create_searcher(searcher)
+
         self.fetcher = Fetcher()
 
         self.extractor = Extractor()
@@ -23,9 +25,9 @@ class ReferenceRetiever():
 
         search_results = self.searcher.search(question)
 
-        urls = [result.url for result in search_results]
+        urls = [result.url for result in search_results]  # 列表
 
-        titles = {result.url: result.title for result in search_results}
+        titles = {result.url: result.title for result in search_results}  # 字典
 
         print("[System] Count of available urls: ", len(urls))
 
@@ -59,11 +61,13 @@ class ReferenceRetiever():
 
             for value in extract_results:
                 #
-                data_list.append({
-                    "url": url,
-                    "title": titles[url],
-                    "text": value
-                })
+                data_list.append(
+                    {
+                        "url": url,
+                        "title": titles[url],
+                        "text": value
+                    }
+                )
 
         print("[System] Count of paragraphs: ", len(data_list))
 

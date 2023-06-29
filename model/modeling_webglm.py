@@ -5,15 +5,28 @@ import re, os
 
 class WebGLM:
 
-    def __init__(self, webglm_ckpt_path, retriever_ckpt_path, device=None, filter_max_batch_size=400, searcher_name="serpapi") -> None:
+    def __init__(
+            self,
+            webglm_ckpt_path,
+            retriever_ckpt_path,
+            device=None,
+            filter_max_batch_size=400,
+            searcher_name="serpapi"
+    ) -> None:
 
         self.device = device
 
-        self.ref_retriever = ReferenceRetiever(retriever_ckpt_path, device, filter_max_batch_size, searcher_name)
+        self.ref_retriever = ReferenceRetiever(
+            retriever_ckpt_path,
+            device,
+            filter_max_batch_size,
+            searcher_name
+        )
 
         self.tokenizer = AutoTokenizer.from_pretrained(webglm_ckpt_path, trust_remote_code=True)
 
         self.model = AutoModelForSeq2SeqLM.from_pretrained(webglm_ckpt_path, trust_remote_code=True)
+
         self.model = self.model.half()
 
         if device:
@@ -61,9 +74,9 @@ class WebGLM:
 
         return {"answer": f[0].strip(), "references": refs}
 
-    def stream_query(self, question):
+    def stream_query(self, question):  # TODO 执行问答
 
-        refs = self.ref_retriever.query(question)
+        refs = self.ref_retriever.query(question)  # 通过RETRIEVER获取相关文本
 
         if not refs:
             #
@@ -124,7 +137,13 @@ def load_model(args):
 
     print('WebGLM Initializing...')
 
-    webglm = WebGLM(webglm_ckpt_path, retiever_ckpt_path, args.device, args.filter_max_batch_size, args.searcher)
+    webglm = WebGLM(
+        webglm_ckpt_path,
+        retiever_ckpt_path,
+        args.device,
+        args.filter_max_batch_size,
+        args.searcher
+    )
 
     print('WebGLM Loaded')
 

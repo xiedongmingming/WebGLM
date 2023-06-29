@@ -6,7 +6,8 @@ import json
 from tqdm import tqdm
 
 PUNCTUATION_SET_TO_EXCLUDE = set(
-    ''.join(['‘', '’', '´', '`', '.', ',', '-', '"', '\'', '[', ']', '{', '}', '(', ')', '!', '?']))
+    ''.join(['‘', '’', '´', '`', '.', ',', '-', '"', '\'', '[', ']', '{', '}', '(', ')', '!', '?'])
+)
 
 
 def get_sub_answers(answers, begin=0, end=None):
@@ -34,6 +35,7 @@ def expand_to_aliases(given_answers, ignore_prefix=False, ignore_suffix=False):
 
 
 def get_best_valid_start_end_idx(start_scores, end_scores, top_k=1, max_size=100):
+    #
     best_start_scores, best_start_idx = torch.topk(start_scores, top_k)
 
     best_end_scores, best_end_idx = torch.topk(end_scores, top_k)
@@ -88,7 +90,9 @@ def eval(model, args):
     ds = [json.loads(data_str) for data_str in open(args.evaluate_task_data_path).readlines()]
 
     for ix, sample in enumerate(tqdm(ds)):
+        #
         output = model.query(sample['question'])
+
         ds[ix]['predict'] = output['answer']
 
     print('Start Extracting Answer...')
@@ -100,17 +104,27 @@ def eval(model, args):
     acc = {}
 
     for sample in tqdm(ds):
+        #
         example = {}
+
         match = extract(extractor, tokenizer, sample)['match']
+
         labels = sample['labels']
+
         for label in labels:
+
             if label not in scores:
+                #
                 scores[label] = [0, 0]
+
             scores[label][1] += 1
+
             if match:
+                #
                 scores[label][0] += 1
 
     for split, data in scores.items():
+        #
         acc[split] = data[0] / data[1]
 
     return acc

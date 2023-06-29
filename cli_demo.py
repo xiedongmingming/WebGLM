@@ -6,7 +6,8 @@ import argparse
 
 from arguments import add_model_config_args
 
-os.environ['WEBGLM_RETRIEVER_CKPT'] = 'F:\\workspace\\github\\xiedongmingming\\WebGLM\\download\\retriever-pretrained-checkpoint'
+os.environ[
+    'WEBGLM_RETRIEVER_CKPT'] = 'F:\\workspace\\github\\xiedongmingming\\WebGLM\\download\\retriever-pretrained-checkpoint'
 
 if __name__ == '__main__':
 
@@ -25,8 +26,11 @@ if __name__ == '__main__':
         question = question.strip()
 
         if not question:
+            #
             break
+
         if question == "quit":
+            #
             break
 
         final_results = {}

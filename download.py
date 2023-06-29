@@ -5,7 +5,8 @@ import re
 from tqdm import tqdm
 
 import requests
-import json, argparse
+import json
+import argparse
 
 sess = requests.Session()
 
@@ -31,6 +32,7 @@ def parse_args():
 
 
 def get_share_key(url):
+    #
     prefix = 'https://cloud.tsinghua.edu.cn/d/'
 
     if not url.startswith(prefix):
@@ -184,9 +186,12 @@ if __name__ == "__main__":
 
     arg = argparse.ArgumentParser()
 
-    arg.add_argument('target', type=str,
-                     choices=["generator-training-data", "retriever-training-data", "retriever-pretrained-checkpoint",
-                              "all"], help='Target to download')
+    arg.add_argument(
+        'target',
+        type=str,
+        choices=["generator-training-data", "retriever-training-data", "retriever-pretrained-checkpoint", "all"],
+        help='Target to download'
+    )
     arg.add_argument('--save', '-s', type=str, default='./download', help='Save directory')
     arg.add_argument("-y", "--yes", action="store_true", help="Download without confirmation")
 
@@ -205,12 +210,14 @@ if __name__ == "__main__":
                 processed_dir = os.path.join(args.save, 'generator-training-data', 'processed')
 
                 if not os.path.exists(processed_dir):
+                    #
                     os.makedirs(processed_dir)
 
                 source_out = open(os.path.join(processed_dir, f'{split}.source'), 'w')
                 target_out = open(os.path.join(processed_dir, f'{split}.target'), 'w')
 
                 for sample in tqdm(ds):
+                    #
                     source, target = make_data(sample)
 
                     source_out.write(source + '\n')
@@ -220,9 +227,15 @@ if __name__ == "__main__":
                 target_out.close()
 
     if args.target in ["all", "retriever-training-data"]:
-
-        download("https://cloud.tsinghua.edu.cn/d/3927b67a834c475288e2/", os.path.join(args.save, 'retriever-training-data'))
+        #
+        download(
+            "https://cloud.tsinghua.edu.cn/d/3927b67a834c475288e2/",
+            os.path.join(args.save, 'retriever-training-data')
+        )
 
     if args.target in ["all", "retriever-pretrained-checkpoint"]:
-
-        download("https://cloud.tsinghua.edu.cn/d/bc96946dd9a14c84b8d4/", os.path.join(args.save, 'retriever-pretrained-checkpoint'))
+        #
+        download(
+            "https://cloud.tsinghua.edu.cn/d/bc96946dd9a14c84b8d4/",
+            os.path.join(args.save, 'retriever-pretrained-checkpoint')
+        )
